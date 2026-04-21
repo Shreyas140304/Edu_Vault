@@ -181,4 +181,24 @@ class UserProvider extends ChangeNotifier {
     _error = null;
     notifyListeners();
   }
+
+  Future<bool> deleteUserProfile() async {
+    try {
+      _isLoading = true;
+      _error = null;
+      notifyListeners();
+
+      await _dbService.deleteUserProfile();
+      _userProfile = null;
+
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
 }

@@ -1,0 +1,62 @@
+{
+  "Class 10": {
+    "source": "CBSE/CISCE/State Boards (official websites)",
+    "documents": [
+      "Class 10 Marksheet",
+      "Class 10 Passing Certificate",
+      "School Leaving Certificate",
+      "Migration Certificate (if applicable)",
+      "Identity Proof"
+    ]
+  },
+  "Class 12": {
+    "source": "CBSE/CISCE/State Boards (official websites)",
+    "documents": [
+      "Class 12 Marksheet",
+      "Class 12 Passing Certificate",
+      "Transfer Certificate",
+      "Migration Certificate",
+      "Character Certificate"
+    ]
+  },
+  "Graduation": {
+    "source": "UGC recognized university norms",
+    "documents": [
+      "Semester-wise Marksheets",
+      "Degree Certificate",
+      "Provisional Degree Certificate",
+      "Transfer/Migration Certificate",
+      "Character Certificate"
+    ]
+  },
+  "Post Graduation": {
+    "source": "UGC recognized university norms",
+    "documents": [
+      "PG Semester Marksheets",
+      "PG Degree Certificate",
+      "Provisional Degree Certificate",
+      "No Objection Certificate (if applicable)"
+    ]
+  },
+  "Entrance Exams": {
+    "source": "Official exam portals",
+    "documents": [
+      "Exam Application Form",
+      "Admit Card",
+      "Result/Scorecard",
+      "Identity Proof",
+      "Passport Photograph",
+      "Signature"
+    ]
+  },
+  "Other Documents": {
+    "source": "Curated default list",
+    "documents": [
+      "Aadhaar Card",
+      "PAN Card",
+      "Passport",
+      "Domicile Certificate",
+      "Category Certificate"
+    ]
+  }
+}

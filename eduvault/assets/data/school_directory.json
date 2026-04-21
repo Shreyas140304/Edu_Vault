@@ -1,0 +1,46 @@
+[
+  {
+    "id": "sch-001",
+    "name": "Kendriya Vidyalaya",
+    "type": "school",
+    "source": "Curated",
+    "state": "Pan India",
+    "country": "India",
+    "website": "https://kvsangathan.nic.in/",
+    "aliases": ["KV", "KVS School"],
+    "metadata": {"network_type": "central"}
+  },
+  {
+    "id": "sch-002",
+    "name": "Jawahar Navodaya Vidyalaya",
+    "type": "school",
+    "source": "Curated",
+    "state": "Pan India",
+    "country": "India",
+    "website": "https://navodaya.gov.in/",
+    "aliases": ["JNV", "Navodaya"],
+    "metadata": {"network_type": "central"}
+  },
+  {
+    "id": "sch-003",
+    "name": "Delhi Public School",
+    "type": "school",
+    "source": "Curated",
+    "state": "Pan India",
+    "country": "India",
+    "website": "https://www.dpsfamily.org/",
+    "aliases": ["DPS"],
+    "metadata": {"network_type": "private"}
+  },
+  {
+    "id": "sch-004",
+    "name": "St. Xavier's High School",
+    "type": "school",
+    "source": "Curated",
+    "state": "Maharashtra",
+    "country": "India",
+    "website": "",
+    "aliases": ["St Xaviers School"],
+    "metadata": {"network_type": "private"}
+  }
+]

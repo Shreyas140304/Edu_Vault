@@ -157,6 +157,37 @@ class DocumentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Search documents with optional stage/category filters.
+  List<Document> searchDocumentsWithFilters({
+    required String query,
+    String? stage,
+    String? category,
+  }) {
+    final normalizedQuery = query.trim().toLowerCase();
+    final normalizedStage = stage?.trim();
+    final normalizedCategory = category?.trim();
+
+    return _documents.where((doc) {
+      final matchesQuery =
+          normalizedQuery.isEmpty ||
+          (doc.fileName?.toLowerCase().contains(normalizedQuery) ?? false) ||
+          (doc.category?.toLowerCase().contains(normalizedQuery) ?? false) ||
+          (doc.extractedText?.toLowerCase().contains(normalizedQuery) ?? false);
+
+      final matchesStage =
+          normalizedStage == null ||
+          normalizedStage.isEmpty ||
+          doc.stage == normalizedStage;
+
+      final matchesCategory =
+          normalizedCategory == null ||
+          normalizedCategory.isEmpty ||
+          doc.category == normalizedCategory;
+
+      return matchesQuery && matchesStage && matchesCategory;
+    }).toList();
+  }
+
   /// Get documents by stage
   List<Document> getDocumentsByStage(String stage) {
     return _dbService.getDocumentsByStage(stage);

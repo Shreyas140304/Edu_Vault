@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ugc-001",
+    "name": "University of Mumbai",
+    "type": "university",
+    "source": "UGC",
+    "state": "Maharashtra",
+    "country": "India",
+    "website": "https://mu.ac.in/",
+    "aliases": ["Mumbai University"],
+    "metadata": {"ugc_recognized": true}
+  },
+  {
+    "id": "ugc-002",
+    "name": "Savitribai Phule Pune University",
+    "type": "university",
+    "source": "UGC",
+    "state": "Maharashtra",
+    "country": "India",
+    "website": "https://www.unipune.ac.in/",
+    "aliases": ["SPPU", "University of Pune"],
+    "metadata": {"ugc_recognized": true}
+  },
+  {
+    "id": "ugc-003",
+    "name": "University of Delhi",
+    "type": "university",
+    "source": "UGC",
+    "state": "Delhi",
+    "country": "India",
+    "website": "http://www.du.ac.in/",
+    "aliases": ["Delhi University", "DU"],
+    "metadata": {"ugc_recognized": true}
+  },
+  {
+    "id": "ugc-004",
+    "name": "Banaras Hindu University",
+    "type": "university",
+    "source": "UGC",
+    "state": "Uttar Pradesh",
+    "country": "India",
+    "website": "https://www.bhu.ac.in/",
+    "aliases": ["BHU"],
+    "metadata": {"ugc_recognized": true}
+  },
+  {
+    "id": "ugc-005",
+    "name": "Jawaharlal Nehru University",
+    "type": "university",
+    "source": "UGC",
+    "state": "Delhi",
+    "country": "India",
+    "website": "https://www.jnu.ac.in/",
+    "aliases": ["JNU"],
+    "metadata": {"ugc_recognized": true}
+  }
+]

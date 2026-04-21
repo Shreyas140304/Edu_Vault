@@ -1,0 +1,68 @@
+[
+  {
+    "id": "board-001",
+    "name": "Central Board of Secondary Education",
+    "type": "board",
+    "source": "StateBoardDirectory",
+    "state": "Pan India",
+    "country": "India",
+    "website": "https://www.cbse.gov.in/",
+    "aliases": ["CBSE"],
+    "metadata": {"board_code": "CBSE"}
+  },
+  {
+    "id": "board-002",
+    "name": "Council for the Indian School Certificate Examinations",
+    "type": "board",
+    "source": "StateBoardDirectory",
+    "state": "Pan India",
+    "country": "India",
+    "website": "https://cisce.org/",
+    "aliases": ["ICSE", "ISC", "CISCE"],
+    "metadata": {"board_code": "CISCE"}
+  },
+  {
+    "id": "board-003",
+    "name": "Maharashtra State Board of Secondary and Higher Secondary Education",
+    "type": "board",
+    "source": "StateBoardDirectory",
+    "state": "Maharashtra",
+    "country": "India",
+    "website": "https://www.mahahsscboard.in/",
+    "aliases": ["MSBSHSE", "Maharashtra Board", "HSC Maharashtra", "SSC Maharashtra"],
+    "metadata": {"board_code": "MSBSHSE"}
+  },
+  {
+    "id": "board-004",
+    "name": "Karnataka School Examination and Assessment Board",
+    "type": "board",
+    "source": "StateBoardDirectory",
+    "state": "Karnataka",
+    "country": "India",
+    "website": "https://kseeb.karnataka.gov.in/",
+    "aliases": ["KSEAB", "KSEEB"],
+    "metadata": {"board_code": "KSEAB"}
+  },
+  {
+    "id": "board-005",
+    "name": "Board of Intermediate Education Andhra Pradesh",
+    "type": "board",
+    "source": "StateBoardDirectory",
+    "state": "Andhra Pradesh",
+    "country": "India",
+    "website": "https://bie.ap.gov.in/",
+    "aliases": ["BIEAP", "AP Inter Board"],
+    "metadata": {"board_code": "BIEAP"}
+  },
+  {
+    "id": "board-006",
+    "name": "Board of Intermediate Education Telangana",
+    "type": "board",
+    "source": "StateBoardDirectory",
+    "state": "Telangana",
+    "country": "India",
+    "website": "https://tgbie.cgg.gov.in/",
+    "aliases": ["TSBIE", "TG Inter Board"],
+    "metadata": {"board_code": "TSBIE"}
+  }
+]

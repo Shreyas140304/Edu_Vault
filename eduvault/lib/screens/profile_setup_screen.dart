@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eduvault/constants/app_colors.dart';
 import 'package:eduvault/constants/app_constants.dart';
-import 'package:eduvault/providers/user_provider.dart';
+import 'package:eduvault/models/institution_directory_model.dart';
+import 'package:eduvault/providers/index.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({Key? key}) : super(key: key);
@@ -27,9 +28,16 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   String? _selectedBoard;
   List<String> _selectedExams = [];
 
+  List<String> _extractNames(List<InstitutionDirectoryEntry> entries) {
+    return entries.map((entry) => entry.name).toList();
+  }
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<InstitutionProvider>().loadDirectory();
+    });
     _pageController.addListener(() {
       setState(() {
         _currentPage = _pageController.page?.toInt() ?? 0;
@@ -59,7 +67,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       final success = await userProvider.createUserProfile(
         fullName: _nameController.text.trim(),
         schoolName: _schoolController.text.trim(),
-        board: _selectedBoard!,
+        board: context.read<InstitutionProvider>().normalizeBoardName(
+          _selectedBoard!,
+        ),
         collegeName: _collegeController.text.trim(),
         universityName: _universityController.text.trim(),
         state: _stateController.text.trim(),
@@ -141,6 +151,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   Widget _buildBasicInfoPage() {
+    final institutionProvider = context.watch<InstitutionProvider>();
+    final schoolSuggestions = _extractNames(
+      institutionProvider.searchSchools(_schoolController.text),
+    );
+    final boardOptions = institutionProvider.boards.isEmpty
+        ? <String>['CBSE', 'State Board', 'ICSE', 'IAMSE', 'Others']
+        : institutionProvider.boards;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Form(
@@ -170,6 +188,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _schoolController,
+              onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
                 labelText: 'School Name',
                 prefixIcon: const Icon(Icons.school),
@@ -182,21 +201,42 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 return null;
               },
             ),
+            if (_schoolController.text.trim().isNotEmpty &&
+                schoolSuggestions.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: schoolSuggestions.take(5).map((name) {
+                    return ActionChip(
+                      label: Text(name),
+                      onPressed: () {
+                        setState(() {
+                          _schoolController.text = name;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedBoard,
+              initialValue: _selectedBoard,
               decoration: InputDecoration(
                 labelText: 'School Board',
                 prefixIcon: const Icon(Icons.domain),
               ),
-              items: ['CBSE', 'State Board', 'ICSE', 'IAMSE', 'Others']
+              items: boardOptions
                   .map(
                     (board) =>
                         DropdownMenuItem(value: board, child: Text(board)),
                   )
                   .toList(),
               onChanged: (value) {
-                setState(() => _selectedBoard = value);
+                setState(() {
+                  _selectedBoard = value;
+                });
               },
               validator: (value) {
                 if (value == null) {
@@ -230,6 +270,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   Widget _buildEducationInfoPage() {
+    final institutionProvider = context.watch<InstitutionProvider>();
+    final collegeSuggestions = _extractNames(
+      institutionProvider.searchColleges(_collegeController.text),
+    );
+    final universitySuggestions = _extractNames(
+      institutionProvider.searchUniversities(_universityController.text),
+    );
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -242,21 +290,61 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           const SizedBox(height: 24),
           TextFormField(
             controller: _collegeController,
+            onChanged: (_) => setState(() {}),
             decoration: InputDecoration(
               labelText: 'College Name (Optional)',
               prefixIcon: const Icon(Icons.business),
               hintText: 'Enter your college name',
             ),
           ),
+          if (_collegeController.text.trim().isNotEmpty &&
+              collegeSuggestions.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: collegeSuggestions.take(5).map((name) {
+                  return ActionChip(
+                    label: Text(name),
+                    onPressed: () {
+                      setState(() {
+                        _collegeController.text = name;
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
           const SizedBox(height: 16),
           TextFormField(
             controller: _universityController,
+            onChanged: (_) => setState(() {}),
             decoration: InputDecoration(
               labelText: 'University Name (Optional)',
               prefixIcon: const Icon(Icons.verified_user),
               hintText: 'Enter your university name',
             ),
           ),
+          if (_universityController.text.trim().isNotEmpty &&
+              universitySuggestions.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: universitySuggestions.take(5).map((name) {
+                  return ActionChip(
+                    label: Text(name),
+                    onPressed: () {
+                      setState(() {
+                        _universityController.text = name;
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
           const SizedBox(height: 32),
           Text(
             'Tip: You can update education details later.',

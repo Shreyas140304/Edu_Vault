@@ -73,6 +73,17 @@ class DatabaseService {
     }
   }
 
+  /// Delete user profile
+  Future<void> deleteUserProfile() async {
+    try {
+      await userBox.delete('profile');
+      _logger.i('User profile deleted');
+    } catch (e) {
+      _logger.e('Error deleting user profile: $e');
+      rethrow;
+    }
+  }
+
   /// Add or update document
   Future<void> addDocument(Document document) async {
     try {

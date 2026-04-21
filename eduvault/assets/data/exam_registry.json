@@ -1,0 +1,102 @@
+{
+  "version": "2026.04",
+  "scope": "top_exams_phase_1",
+  "exams": [
+    {
+      "exam_name": "GATE",
+      "aliases": ["gate", "gate exam", "graduate aptitude test in engineering"],
+      "official_portal": "https://gate2026.iitr.ac.in/",
+      "application_link": "https://gate2026.iitr.ac.in/",
+      "official_notice_urls": ["https://gate2026.iitr.ac.in/"],
+      "required_documents": [
+        "Qualifying Degree Marksheet/Certificate",
+        "Photo ID Proof",
+        "Passport Photograph",
+        "Signature",
+        "Category Certificate (if applicable)",
+        "PwD Certificate (if applicable)"
+      ],
+      "timeline_template": [
+        "Application window: Aug-Sep",
+        "Correction window: Oct",
+        "Admit card release: Jan",
+        "Exam window: Feb",
+        "Result declaration: Mar"
+      ],
+      "fallback_deadline": "2026-09-30",
+      "fallback_exam_date": "2027-02-08"
+    },
+    {
+      "exam_name": "CAT",
+      "aliases": ["cat", "common admission test", "iim cat"],
+      "official_portal": "https://iimcat.ac.in/",
+      "application_link": "https://iimcat.ac.in/",
+      "official_notice_urls": ["https://iimcat.ac.in/"],
+      "required_documents": [
+        "Bachelor Degree Details",
+        "10th and 12th Academic Details",
+        "Passport Photograph",
+        "Signature",
+        "Category Certificate (if applicable)"
+      ],
+      "timeline_template": [
+        "Notification release: Jul",
+        "Registration window: Aug-Sep",
+        "Admit card release: Oct",
+        "Exam window: Nov",
+        "Result declaration: Dec-Jan"
+      ],
+      "fallback_deadline": "2026-09-20",
+      "fallback_exam_date": "2026-11-22"
+    },
+    {
+      "exam_name": "NEET",
+      "aliases": ["neet", "neet ug", "nta neet"],
+      "official_portal": "https://neet.nta.nic.in/",
+      "application_link": "https://neet.nta.nic.in/",
+      "official_notice_urls": ["https://neet.nta.nic.in/"],
+      "required_documents": [
+        "Class 10 Certificate",
+        "Class 12 Marksheet/Details",
+        "Passport Photograph",
+        "Signature",
+        "Photo ID Proof",
+        "Category Certificate (if applicable)"
+      ],
+      "timeline_template": [
+        "Information bulletin release: Feb",
+        "Registration window: Feb-Mar",
+        "Correction window: Mar",
+        "Admit card release: Apr-May",
+        "Exam date: May",
+        "Result declaration: Jun"
+      ],
+      "fallback_deadline": "2026-03-15",
+      "fallback_exam_date": "2026-05-03"
+    },
+    {
+      "exam_name": "IIT JEE",
+      "aliases": ["jee", "jee main", "nta jee", "iit jee main"],
+      "official_portal": "https://jeemain.nta.nic.in/",
+      "application_link": "https://jeemain.nta.nic.in/",
+      "official_notice_urls": ["https://jeemain.nta.nic.in/"],
+      "required_documents": [
+        "Class 10 Certificate",
+        "Class 12 Details",
+        "Passport Photograph",
+        "Signature",
+        "Photo ID Proof",
+        "Category Certificate (if applicable)"
+      ],
+      "timeline_template": [
+        "Session 1 registration: Oct-Nov",
+        "Session 1 exam window: Jan",
+        "Session 2 registration: Feb-Mar",
+        "Session 2 exam window: Apr",
+        "Result publication: Session-wise"
+      ],
+      "fallback_deadline": "2026-11-27",
+      "fallback_exam_date": "2027-01-20"
+    }
+  ]
+}

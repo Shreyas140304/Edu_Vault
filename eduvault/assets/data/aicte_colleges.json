@@ -1,0 +1,57 @@
+[
+  {
+    "id": "aicte-001",
+    "name": "Veermata Jijabai Technological Institute",
+    "type": "college",
+    "source": "AICTE",
+    "state": "Maharashtra",
+    "country": "India",
+    "website": "https://vjti.ac.in/",
+    "aliases": ["VJTI"],
+    "metadata": {"aicte_approved": true}
+  },
+  {
+    "id": "aicte-002",
+    "name": "Sardar Patel Institute of Technology",
+    "type": "college",
+    "source": "AICTE",
+    "state": "Maharashtra",
+    "country": "India",
+    "website": "https://www.spit.ac.in/",
+    "aliases": ["SPIT"],
+    "metadata": {"aicte_approved": true}
+  },
+  {
+    "id": "aicte-003",
+    "name": "Indian Institute of Technology Bombay",
+    "type": "college",
+    "source": "AICTE",
+    "state": "Maharashtra",
+    "country": "India",
+    "website": "https://www.iitb.ac.in/",
+    "aliases": ["IIT Bombay", "IITB"],
+    "metadata": {"aicte_approved": true}
+  },
+  {
+    "id": "aicte-004",
+    "name": "National Institute of Technology Trichy",
+    "type": "college",
+    "source": "AICTE",
+    "state": "Tamil Nadu",
+    "country": "India",
+    "website": "https://www.nitt.edu/",
+    "aliases": ["NIT Trichy", "NITT"],
+    "metadata": {"aicte_approved": true}
+  },
+  {
+    "id": "aicte-005",
+    "name": "Indian Institute of Management Ahmedabad",
+    "type": "college",
+    "source": "AICTE",
+    "state": "Gujarat",
+    "country": "India",
+    "website": "https://www.iima.ac.in/",
+    "aliases": ["IIM Ahmedabad", "IIMA"],
+    "metadata": {"aicte_approved": true}
+  }
+]

@@ -5,3 +5,7 @@ export 'search_screen.dart';
 export 'placeholder_screens.dart';
 export 'upload_document_screen.dart';
 export 'add_exam_screen.dart';
+export 'settings_screen.dart';
+export 'notifications_screen.dart';
+export 'profile_screen.dart';
+export 'language_setup_screen.dart';

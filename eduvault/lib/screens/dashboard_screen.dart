@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eduvault/constants/app_colors.dart';
 import 'package:eduvault/constants/app_constants.dart';
+import 'package:eduvault/l10n/app_localizations.dart';
 import 'package:eduvault/providers/index.dart';
 import 'package:eduvault/widgets/stage_card.dart';
 import 'package:eduvault/widgets/exam_card.dart';
@@ -26,7 +27,10 @@ class _DashboardScreenState extends State<DashboardScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UserProvider>().loadUserProfile();
       context.read<DocumentProvider>().loadDocuments();
-      context.read<EntranceExamProvider>().loadEntranceExams();
+      final examProvider = context.read<EntranceExamProvider>();
+      examProvider.loadEntranceExams().then((_) {
+        examProvider.syncAllExamsFromOfficialSources();
+      });
     });
   }
 
@@ -41,7 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('EduVault'),
+        title: Text(context.tr('app_name')),
         centerTitle: true,
         elevation: 0,
         actions: [
@@ -124,10 +128,13 @@ class _DashboardScreenState extends State<DashboardScreen>
           // Tabs
           TabBar(
             controller: _tabController,
-            tabs: const [
-              Tab(text: 'Stages', icon: Icon(Icons.school)),
-              Tab(text: 'Exams', icon: Icon(Icons.assignment)),
-              Tab(text: 'Overview', icon: Icon(Icons.dashboard)),
+            tabs: [
+              Tab(text: context.tr('stages'), icon: const Icon(Icons.school)),
+              Tab(text: context.tr('exams'), icon: const Icon(Icons.assignment)),
+              Tab(
+                text: context.tr('overview'),
+                icon: const Icon(Icons.dashboard),
+              ),
             ],
           ),
           // Tab Content
@@ -148,7 +155,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           Navigator.of(context).pushNamed('/upload-document');
         },
         icon: const Icon(Icons.add),
-        label: const Text('Upload Document'),
+        label: Text(context.tr('upload_document')),
       ),
     );
   }
@@ -201,7 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No entrance exams added yet',
+                  context.tr('no_exams_added'),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 24),
@@ -210,7 +217,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     Navigator.of(context).pushNamed('/add-exam');
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('Add Exam'),
+                  label: Text(context.tr('add_exam')),
                 ),
               ],
             ),
@@ -242,7 +249,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Academic Progress',
+            context.tr('academic_progress'),
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 16),
@@ -256,17 +263,17 @@ class _DashboardScreenState extends State<DashboardScreen>
                 crossAxisSpacing: 16,
                 children: [
                   _buildStatCard(
-                    'Total Documents',
+                    context.tr('documents'),
                     docProvider.documents.length.toString(),
                     Icons.description,
                   ),
                   _buildStatCard(
-                    'Active Exams',
+                    context.tr('active_exams'),
                     examProvider.activeExams.length.toString(),
                     Icons.assignment,
                   ),
                   _buildStatCard(
-                    'Approaching Deadlines',
+                    context.tr('approaching_deadlines'),
                     examProvider
                         .getExamsWithApproachingDeadlines()
                         .length
@@ -274,7 +281,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     Icons.alarm,
                   ),
                   _buildStatCard(
-                    'Completed Stages',
+                    context.tr('completed_stages'),
                     '${_getCompletedStages(docProvider).length}/${AppConstants.educationStages.length}',
                     Icons.check_circle,
                   ),
@@ -284,7 +291,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           ),
           const SizedBox(height: 32),
           Text(
-            'Recent Documents',
+            context.tr('recent_documents'),
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 16),
@@ -302,7 +309,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       child: Padding(
                         padding: const EdgeInsets.all(24),
                         child: Text(
-                          'No documents uploaded yet',
+                          context.tr('no_docs_uploaded'),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),

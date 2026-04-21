@@ -81,7 +81,8 @@ class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
       return;
     }
 
-    final category = _selectedCategory ?? _categoriesForStage(_selectedStage).first;
+    final category =
+        _selectedCategory ?? _categoriesForStage(_selectedStage).first;
     final provider = context.read<DocumentProvider>();
     final success = await provider.uploadDocumentFromPath(
       _selectedFile!.path,
@@ -92,15 +93,17 @@ class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
     if (!mounted) return;
 
     if (success) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Document uploaded successfully.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Document uploaded successfully.')),
+      );
       Navigator.of(context).pop();
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(provider.error ?? 'Upload failed. Please try again.')),
+      SnackBar(
+        content: Text(provider.error ?? 'Upload failed. Please try again.'),
+      ),
     );
   }
 
@@ -144,7 +147,10 @@ class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
                   prefixIcon: Icon(Icons.school),
                 ),
                 items: AppConstants.educationStages
-                    .map((stage) => DropdownMenuItem(value: stage, child: Text(stage)))
+                    .map(
+                      (stage) =>
+                          DropdownMenuItem(value: stage, child: Text(stage)),
+                    )
                     .toList(),
                 onChanged: (value) {
                   if (value == null) return;
@@ -162,7 +168,10 @@ class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
                   prefixIcon: Icon(Icons.category),
                 ),
                 items: categories
-                    .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+                    .map(
+                      (item) =>
+                          DropdownMenuItem(value: item, child: Text(item)),
+                    )
                     .toList(),
                 onChanged: (value) => setState(() => _selectedCategory = value),
               ),
@@ -184,7 +193,9 @@ class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
                       OutlinedButton.icon(
                         onPressed: provider.isLoading ? null : _showPickOptions,
                         icon: const Icon(Icons.upload_file),
-                        label: Text(_selectedFile == null ? 'Choose File' : 'Change File'),
+                        label: Text(
+                          _selectedFile == null ? 'Choose File' : 'Change File',
+                        ),
                       ),
                     ],
                   ),
@@ -197,10 +208,15 @@ class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
                     ? const SizedBox(
                         width: 18,
                         height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : const Icon(Icons.check),
-                label: Text(provider.isLoading ? 'Uploading...' : 'Upload Document'),
+                label: Text(
+                  provider.isLoading ? 'Uploading...' : 'Upload Document',
+                ),
               ),
             ],
           );

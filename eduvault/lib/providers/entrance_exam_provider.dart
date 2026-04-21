@@ -6,11 +6,13 @@ import 'package:eduvault/constants/app_constants.dart';
 
 class EntranceExamProvider extends ChangeNotifier {
   final DatabaseService _dbService = DatabaseService();
+  final ExamSyncService _examSyncService = ExamSyncService();
 
   List<EntranceExam> _exams = [];
   EntranceExam? _selectedExam;
   bool _isLoading = false;
   String? _error;
+  final Map<String, String> _syncStatusByExamId = {};
 
   /// Getters
   List<EntranceExam> get exams => _exams;
@@ -19,6 +21,7 @@ class EntranceExamProvider extends ChangeNotifier {
   EntranceExam? get selectedExam => _selectedExam;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  String? getSyncStatus(String examId) => _syncStatusByExamId[examId];
 
   /// Load all entrance exams
   Future<void> loadEntranceExams() async {
@@ -41,37 +44,61 @@ class EntranceExamProvider extends ChangeNotifier {
   /// Add entrance exam
   Future<bool> addEntranceExam({
     required String examName,
-    required DateTime applicationDeadline,
+    DateTime? applicationDeadline,
     DateTime? examDate,
     String? officialPortal,
     String? examLink,
     String? notes,
+    bool autoFetchOfficialData = true,
   }) async {
     try {
       _isLoading = true;
       _error = null;
       notifyListeners();
 
+      final normalizedExamName = await _examSyncService.normalizeExamName(
+        examName,
+      );
+
+      ExamSyncResult? syncResult;
+      if (autoFetchOfficialData) {
+        syncResult = await _examSyncService.fetchExamDetails(
+          normalizedExamName,
+        );
+      }
+
       // Get default requirements for exam
-      final requirements = AppConstants.examRequirements[examName] ?? [];
+      final requirements = syncResult?.requiredDocuments.isNotEmpty == true
+          ? syncResult!.requiredDocuments
+          : (AppConstants.examRequirements[normalizedExamName] ?? []);
+
+      final finalDeadline =
+          syncResult?.applicationDeadline ??
+          applicationDeadline ??
+          DateTime.now().add(const Duration(days: 90));
 
       final exam = EntranceExam(
         id: const Uuid().v4(),
-        examName: examName,
-        applicationDeadline: applicationDeadline,
-        examDate: examDate,
+        examName: normalizedExamName,
+        applicationDeadline: finalDeadline,
+        examDate: syncResult?.examDate ?? examDate,
         requiredDocuments: requirements,
         uploadedDocumentIds: [],
-        officialPortal: officialPortal,
-        examLink: examLink,
+        officialPortal: syncResult?.officialPortal ?? officialPortal,
+        examLink: syncResult?.applicationLink ?? examLink,
         lastUpdated: DateTime.now(),
-        notes: notes,
+        notes: syncResult?.buildNotes() ?? notes,
         isActive: true,
         applicationStatus: 'Not Started',
       );
 
       await _dbService.addEntranceExam(exam);
       _exams.add(exam);
+      _syncStatusByExamId[exam.id ?? ''] = syncResult == null
+          ? 'Manual mode'
+          : (syncResult.isLiveFetched
+                ? 'Synced from ${syncResult.sourceLabel}'
+                : 'Synced with fallback template');
 
       _isLoading = false;
       notifyListeners();
@@ -81,6 +108,67 @@ class EntranceExamProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<bool> syncExamFromOfficialSource(String examId) async {
+    try {
+      final examIndex = _exams.indexWhere((exam) => exam.id == examId);
+      if (examIndex == -1) return false;
+
+      _isLoading = true;
+      _error = null;
+      notifyListeners();
+
+      final current = _exams[examIndex];
+      final name = current.examName;
+      if (name == null || name.trim().isEmpty) {
+        _isLoading = false;
+        _error = 'Exam name is missing';
+        notifyListeners();
+        return false;
+      }
+
+      final syncResult = await _examSyncService.fetchExamDetails(name);
+      final updated = current.copyWith(
+        applicationDeadline:
+            syncResult.applicationDeadline ?? current.applicationDeadline,
+        examDate: syncResult.examDate ?? current.examDate,
+        requiredDocuments: syncResult.requiredDocuments.isNotEmpty
+            ? syncResult.requiredDocuments
+            : current.requiredDocuments,
+        officialPortal: syncResult.officialPortal,
+        examLink: syncResult.applicationLink ?? current.examLink,
+        notes: syncResult.buildNotes(),
+        lastUpdated: DateTime.now(),
+      );
+
+      _exams[examIndex] = updated;
+      await _dbService.addEntranceExam(updated);
+      _syncStatusByExamId[examId] = syncResult.isLiveFetched
+          ? 'Synced from ${syncResult.sourceLabel}'
+          : 'Synced with fallback template';
+
+      if (_selectedExam?.id == examId) {
+        _selectedExam = updated;
+      }
+
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<void> syncAllExamsFromOfficialSources() async {
+    for (final exam in _exams) {
+      final id = exam.id;
+      if (id == null) continue;
+      await syncExamFromOfficialSource(id);
     }
   }
 

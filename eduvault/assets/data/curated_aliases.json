@@ -1,0 +1,21 @@
+{
+  "board_aliases": {
+    "cbse": "Central Board of Secondary Education",
+    "icse": "Council for the Indian School Certificate Examinations",
+    "isc": "Council for the Indian School Certificate Examinations",
+    "hsc": "Maharashtra State Board of Secondary and Higher Secondary Education",
+    "ssc": "Maharashtra State Board of Secondary and Higher Secondary Education",
+    "state board": "Maharashtra State Board of Secondary and Higher Secondary Education"
+  },
+  "exam_aliases": {
+    "jee main": "IIT JEE",
+    "jee": "IIT JEE",
+    "nta jee": "IIT JEE"
+  },
+  "institution_aliases": {
+    "spit": "Sardar Patel Institute of Technology",
+    "vjti": "Veermata Jijabai Technological Institute",
+    "du": "University of Delhi",
+    "sppu": "Savitribai Phule Pune University"
+  }
+}

@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eduvault/constants/app_colors.dart';
-import 'package:eduvault/providers/user_provider.dart';
+import 'package:eduvault/l10n/app_localizations.dart';
+import 'package:eduvault/providers/index.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -52,9 +53,19 @@ class _SplashScreenState extends State<SplashScreen>
     // Load user profile
     if (mounted) {
       final userProvider = context.read<UserProvider>();
+      final settingsProvider = context.read<AppSettingsProvider>();
+      await settingsProvider.loadSettings();
       await userProvider.loadUserProfile();
 
       if (mounted) {
+        if (!settingsProvider.hasLanguageSelection) {
+          Navigator.of(context).pushReplacementNamed(
+            '/language-setup',
+            arguments: userProvider.isProfileComplete,
+          );
+          return;
+        }
+
         // Navigate based on profile existence
         if (userProvider.isProfileComplete) {
           Navigator.of(context).pushReplacementNamed('/dashboard');
@@ -109,7 +120,7 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 children: [
                   Text(
-                    'EduVault',
+                    context.tr('app_name'),
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.bold,
@@ -117,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Intelligent Academic Document Manager',
+                    context.tr('splash_tagline'),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSecondary,
                     ),

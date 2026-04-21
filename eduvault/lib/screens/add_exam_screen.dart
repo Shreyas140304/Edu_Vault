@@ -16,6 +16,7 @@ class _AddExamScreenState extends State<AddExamScreen> {
   String? _selectedExam;
   DateTime? _applicationDeadline;
   DateTime? _examDate;
+  bool _autoFetchOfficialData = true;
   final _officialPortalController = TextEditingController();
   final _examLinkController = TextEditingController();
   final _notesController = TextEditingController();
@@ -57,10 +58,10 @@ class _AddExamScreenState extends State<AddExamScreen> {
 
   Future<void> _submit() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    if (_selectedExam == null || _applicationDeadline == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select exam name and deadline.')),
-      );
+    if (_selectedExam == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please select exam name.')));
       return;
     }
 
@@ -78,6 +79,7 @@ class _AddExamScreenState extends State<AddExamScreen> {
       notes: _notesController.text.trim().isEmpty
           ? null
           : _notesController.text.trim(),
+      autoFetchOfficialData: _autoFetchOfficialData,
     );
 
     if (!mounted) return;
@@ -105,6 +107,11 @@ class _AddExamScreenState extends State<AddExamScreen> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                Text(
+                  'Auto-sync currently has strongest coverage for GATE, CAT, NEET, and IIT JEE.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   value: _selectedExam,
                   decoration: const InputDecoration(
@@ -112,29 +119,62 @@ class _AddExamScreenState extends State<AddExamScreen> {
                     prefixIcon: Icon(Icons.assignment),
                   ),
                   items: AppConstants.popularExams
-                      .map((exam) => DropdownMenuItem(value: exam, child: Text(exam)))
+                      .map(
+                        (exam) =>
+                            DropdownMenuItem(value: exam, child: Text(exam)),
+                      )
                       .toList(),
-                  onChanged: (value) => setState(() => _selectedExam = value),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedExam = value;
+                    });
+                  },
                   validator: (value) =>
                       value == null ? 'Please select an exam.' : null,
                 ),
                 const SizedBox(height: 12),
+                SwitchListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  title: const Text('Auto-fetch official details'),
+                  subtitle: const Text(
+                    'Uses official portals when available and falls back to templates',
+                  ),
+                  value: _autoFetchOfficialData,
+                  onChanged: (value) {
+                    setState(() {
+                      _autoFetchOfficialData = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 8),
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                   leading: const Icon(Icons.calendar_today),
                   title: const Text('Application Deadline'),
-                  subtitle: Text(_formatDate(_applicationDeadline)),
+                  subtitle: Text(
+                    _autoFetchOfficialData
+                        ? 'Auto-filled from sync (or fallback)'
+                        : _formatDate(_applicationDeadline),
+                  ),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _pickDate(isDeadline: true),
+                  onTap: _autoFetchOfficialData
+                      ? null
+                      : () => _pickDate(isDeadline: true),
                 ),
                 const Divider(),
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                   leading: const Icon(Icons.event),
                   title: const Text('Exam Date (Optional)'),
-                  subtitle: Text(_formatDate(_examDate)),
+                  subtitle: Text(
+                    _autoFetchOfficialData
+                        ? 'Auto-filled from sync when available'
+                        : _formatDate(_examDate),
+                  ),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _pickDate(isDeadline: false),
+                  onTap: _autoFetchOfficialData
+                      ? null
+                      : () => _pickDate(isDeadline: false),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
