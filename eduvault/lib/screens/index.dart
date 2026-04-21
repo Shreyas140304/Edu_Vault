@@ -1,0 +1,7 @@
+export 'splash_screen.dart';
+export 'profile_setup_screen.dart';
+export 'dashboard_screen.dart';
+export 'search_screen.dart';
+export 'placeholder_screens.dart';
+export 'upload_document_screen.dart';
+export 'add_exam_screen.dart';
